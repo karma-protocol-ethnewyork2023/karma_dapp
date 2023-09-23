@@ -5071,6 +5071,19 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@regraph/geo@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@regraph/geo/-/geo-0.0.1.tgz#c0a955b317f128fd3e50303fbd4f9aad15caa464"
+  integrity sha512-q+poXWJQIVfldYcQQI4EjA8yeUs9590BTAaGTuMSLSlUvlJ8n8GyYY1Zk18hHnx2C75oqnneah1J2P3Ax94txg==
+
+"@regraph/graph@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@regraph/graph/-/graph-0.0.1.tgz#717d289a21ad7ec957da65fc4e4d0f960787beb6"
+  integrity sha512-8s/9bzoIOELfJu5RXXhanAohpmUOsA+TA/0kIHv9onNSp3OgSXkucmuAi90EUGG+1eME3L0xmQ7pvlwO8V3BVQ==
+  dependencies:
+    "@regraph/geo" "^0.0.1"
+    prop-types "^15.7.2"
+
 "@rushstack/eslint-patch@^1.1.0", "@rushstack/eslint-patch@^1.1.3":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
@@ -7484,6 +7497,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
+
+"@yomguithereal/helpers@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@yomguithereal/helpers/-/helpers-1.1.1.tgz#185dfb0f88ca2beec53d0adf6eed15c33b1c549d"
+  integrity sha512-UYvAq/XCA7xoh1juWDYsq3W0WywOB+pz8cgVnE1b45ZfdMhBvHDrgmSFG3jXeZSr2tMTYLGHFHON+ekG05Jebg==
 
 JSONStream@^1.3.5:
   version "1.3.5"
@@ -11762,6 +11780,11 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
+
+graphology-utils@^2.5.0:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/graphology-utils/-/graphology-utils-2.5.2.tgz#4d30d6e567d27c01f105e1494af816742e8d2440"
+  integrity sha512-ckHg8MXrXJkOARk56ZaSCM1g1Wihe2d6iTmz1enGOz4W/l831MBCKSayeFQfowgF8wd+PQ4rlch/56Vs/VZLDQ==
 
 gunzip-maybe@^1.4.2:
   version "1.4.2"
@@ -17438,6 +17461,15 @@ siginfo@^2.0.0:
   resolved "https://registry.yarnpkg.com/siginfo/-/siginfo-2.0.0.tgz#32e76c70b79724e3bb567cb9d543eb858ccfaf30"
   integrity sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==
 
+sigma@^3.0.0-alpha3:
+  version "3.0.0-alpha3"
+  resolved "https://registry.yarnpkg.com/sigma/-/sigma-3.0.0-alpha3.tgz#2c14598b4a0ddf145ee4f3ede80fe17ee2fc0713"
+  integrity sha512-WpUqM7cleO67/n/kaDL3ZP9yC2+6CgxL3J3GkQNqdt50PwFD30DVmLNldxhv+fFiXo8AX0Er4qVflL8ll/fCcg==
+  dependencies:
+    "@yomguithereal/helpers" "^1.1.1"
+    events "^3.3.0"
+    graphology-utils "^2.5.0"
+
 signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
@@ -18877,6 +18909,16 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vis-data@^7.1.7:
+  version "7.1.7"
+  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-7.1.7.tgz#e70475e69e01ed0f4535352ed0eae64a6337f298"
+  integrity sha512-Jfrb6Ixyr3jdqFgpCBWnzb4w7PdD3UjOY6vea9yXixoKSLveUj+rAuxByoRKRvdjhsRtsYCEXG6MXjjx+uvGvQ==
+
+vis-network@^9.1.6:
+  version "9.1.6"
+  resolved "https://registry.yarnpkg.com/vis-network/-/vis-network-9.1.6.tgz#943df07e829248943656a2f19a7ec87cc1b707de"
+  integrity sha512-Eiwx1JleAsUqfy4pzcsFngCVlCEdjAtRPB/OwCV7PHBm+o2jtE4IZPcPITAEGUlxvL4Fdw7/lZsfD32dL+IL6g==
 
 vite-node@0.34.4:
   version "0.34.4"

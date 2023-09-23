@@ -1,6 +1,8 @@
 import { useRouter } from "next/router"
 import Image from "next/image"
-import { use, useEffect, useState } from "react"
+import { use, useEffect, useRef, useState } from "react"
+import { DataSet } from "vis-data/peer"
+import { Network } from "vis-network/peer"
 
 interface User {
   name: string
@@ -9,12 +11,15 @@ interface User {
 function ProfilePage({ user }: { user: User }) {
   const router = useRouter()
   const { name } = router.query
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const [isGraphLoaded, setIsGraphLoaded] = useState(false)
 
   const [profileName, setProfileName] = useState("")
 
-  const [nodes, setNodes] = useState(0)
-  const [superNodes, setSuperNodes] = useState(0)
-  const [edges, setEdges] = useState(0)
+  const [nodes, setNodes] = useState(6)
+  const [superNodes, setSuperNodes] = useState(2)
+  const [edges, setEdges] = useState(9)
 
   useEffect(() => {
     if (user.name.length > 10) {
@@ -22,7 +27,65 @@ function ProfilePage({ user }: { user: User }) {
     } else {
       setProfileName(user.name)
     }
-  }, [router.query])
+  }, [])
+
+  useEffect(() => {
+    if (containerRef.current !== null && !isGraphLoaded) {
+      // Dynamic import
+      import("vis-network/peer").then((visNetwork) => {
+        import("vis-data/peer").then((visData) => {
+          const nodes = new visData.DataSet([
+            { id: 1, shape: "circularImage", image: "/graph_icon_me.png", size: 50 },
+            { id: 2, shape: "circularImage", image: "/graph_icon_node.png" },
+            { id: 3, shape: "circularImage", image: "/graph_icon_node.png" },
+            { id: 4, shape: "circularImage", image: "/graph_icon_supernode.png" },
+            { id: 5, shape: "circularImage", image: "/graph_icon_node.png" },
+            { id: 6, shape: "circularImage", image: "/graph_icon_node.png" },
+            { id: 7, shape: "circularImage", image: "/graph_icon_supernode.png" },
+          ])
+
+          const edges = new visData.DataSet<any>()
+          edges.add([
+            { from: 1, to: 2 },
+            { from: 1, to: 3 },
+            { from: 1, to: 4 },
+            { from: 1, to: 5 },
+            { from: 1, to: 6 },
+            { from: 1, to: 7 },
+
+            { from: 4, to: 3 },
+          ])
+
+          const data = {
+            nodes: nodes,
+            edges: edges,
+          }
+
+          const options = {
+            nodes: {
+              borderWidth: 2,
+              size: 30,
+              color: {
+                border: "#222222",
+                background: "#666666",
+              },
+              font: { color: "#eeeeee" },
+            },
+            edges: {
+              color: "white",
+              width: 2,
+            },
+          }
+
+          // Check again just in case
+          if (containerRef.current && !isGraphLoaded) {
+            const network = new visNetwork.Network(containerRef.current, data, options)
+            setIsGraphLoaded(true)
+          }
+        })
+      })
+    }
+  }, [])
 
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -40,9 +103,12 @@ function ProfilePage({ user }: { user: User }) {
       <div className="absolute top-[56px] flex w-screen flex-col items-center">
         <div className="h-[18px]" />
         {/* graph */}
-        <div style={{ minWidth: "285px", minHeight: "285px" }}>
+
+        <div style={{ minWidth: "285px", minHeight: "285px" }} className="relative">
           <Image src="/graph_back.png" width={285} height={285} alt="" />
+          <div ref={containerRef} style={{ width: "285px", height: "285px" }} className="absolute top-0"></div>
         </div>
+
         <div className="h-[33px]" />
         {/* datas */}
         <div className="flex w-[335px] flex-col items-center space-y-[8px] rounded-[20px] bg-[#393E3A] px-[20px] py-[16px]">
