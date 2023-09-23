@@ -1,4 +1,5 @@
 import "../styles/tailwind.css"
+import dotenv from "dotenv"
 import { Work_Sans } from "next/font/google"
 import { AppProps } from "next/app"
 import { MetaMaskProvider } from "@metamask/sdk-react"
@@ -8,6 +9,8 @@ const workSans = Work_Sans({ subsets: ["latin"] })
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [host, setHost] = useState<string>("")
+
+  dotenv.config()
 
   useEffect(() => {
     setHost(window.location.host)

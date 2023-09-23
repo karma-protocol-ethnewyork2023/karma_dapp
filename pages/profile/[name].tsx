@@ -4,11 +4,13 @@ import { use, useEffect, useRef, useState } from "react"
 import { DataSet } from "vis-data/peer"
 import { Network } from "vis-network/peer"
 import { useSDK } from "@metamask/sdk-react"
-import { set } from "lodash"
+import useTelegram from "hooks/useTelegram"
 
 interface User {
   name: string
 }
+const tele_api_id = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_ID
+const tele_api_hash = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_HASH
 
 function ProfilePage({ user }: { user: User }) {
   const router = useRouter()
@@ -24,6 +26,14 @@ function ProfilePage({ user }: { user: User }) {
   const [nodes, setNodes] = useState(6)
   const [superNodes, setSuperNodes] = useState(2)
   const [edges, setEdges] = useState(9)
+
+  const { getNearestDc, authSendCode, authSignIn, getUserInfoByUsername } = useTelegram()
+
+  useEffect(() => {
+    getNearestDc()
+    // authSendCode("821064348327")
+    getUserInfoByUsername("Jewelrykim")
+  }, [])
 
   useEffect(() => {
     console.log(user.name, localStorage.getItem("metamask_account"))
