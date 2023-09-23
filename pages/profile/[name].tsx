@@ -3,6 +3,8 @@ import Image from "next/image"
 import { use, useEffect, useRef, useState } from "react"
 import { DataSet } from "vis-data/peer"
 import { Network } from "vis-network/peer"
+import { useSDK } from "@metamask/sdk-react"
+import { set } from "lodash"
 
 interface User {
   name: string
@@ -17,15 +19,24 @@ function ProfilePage({ user }: { user: User }) {
 
   const [profileName, setProfileName] = useState("")
 
+  const [isMyProfile, setIsMyProfile] = useState(false)
+
   const [nodes, setNodes] = useState(6)
   const [superNodes, setSuperNodes] = useState(2)
   const [edges, setEdges] = useState(9)
 
   useEffect(() => {
-    if (user.name.length > 10) {
-      setProfileName(`${user.name.slice(0, 10)}...`)
+    console.log(user.name, localStorage.getItem("metamask_account"))
+    if (user.name === localStorage.getItem("metamask_account")) {
+      setIsMyProfile(true)
+      setProfileName("My")
     } else {
-      setProfileName(user.name)
+      if (user.name.length > 10) {
+        setProfileName(`${user.name.slice(0, 10)}...`)
+      } else {
+        setProfileName(`${user.name}'s`)
+      }
+      setIsMyProfile(false)
     }
   }, [])
 
@@ -91,11 +102,19 @@ function ProfilePage({ user }: { user: User }) {
     return <div>Loading...</div>
   }
 
+  const handleQrCodeClick = () => {
+    console.log("qr code click")
+  }
+
+  const handleSendTelegramMsg = () => {
+    console.log("qr code click")
+  }
+
   return (
     <main className="relative h-screen w-screen">
       {/* header */}
       <div className="absolute left-0 top-0 flex h-[56px] w-screen items-center justify-between bg-[#393E3A] px-[16px]">
-        <h1 className="font-sans text-[20px] font-bold text-white">{profileName}&rsquo;s Profile</h1>
+        <h1 className="font-sans text-[20px] font-bold text-white">{profileName} Profile</h1>
         <button style={{ minWidth: "28px", minHeight: "28px" }}>
           <Image src="/icon_search.png" width={28} height={28} alt="" />
         </button>
@@ -149,11 +168,25 @@ function ProfilePage({ user }: { user: User }) {
         <div className="h-[16px]" />
 
         {/* button */}
-        <button className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
-          <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
-            Message via Telegram
-          </div>
-        </button>
+        {isMyProfile ? (
+          <button
+            onClick={handleQrCodeClick}
+            className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
+          >
+            <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
+              QR Code
+            </div>
+          </button>
+        ) : (
+          <button
+            onClick={handleSendTelegramMsg}
+            className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
+          >
+            <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
+              Message via Telegram
+            </div>
+          </button>
+        )}
       </div>
     </main>
   )
