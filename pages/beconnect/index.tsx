@@ -56,7 +56,7 @@ export default function BeConnect() {
           </div>
         </div>
         <div className="h-[52px]" />
-        <div className="flex w-[335px] flex-col items-start space-y-7 rounded-lg bg-[#393E3A] p-6">
+        <div className="flex w-[335px] flex-col items-start space-y-7 rounded-[20px] bg-[#393E3A] p-6">
           <div>
             <span className="text-center font-sans text-[30px] font-black leading-normal text-main">2 ppl </span>
             <span className="text-center font-sans text-[30px] font-semibold leading-normal text-main">between us</span>
@@ -90,7 +90,7 @@ export default function BeConnect() {
               </div>
             }
             {
-              <div className="flex justify-start">
+              <div className="mt-4 flex justify-start">
                 <div className="relative" style={{ minWidth: "40px", minHeight: "40px" }}>
                   <Image src="/white_circle.png" width={40} height={40} alt="" />
                   <div className="absolute left-[9px] top-[6px]" style={{ minWidth: "24px", minHeight: "24px" }}>
