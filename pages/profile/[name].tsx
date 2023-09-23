@@ -4,7 +4,6 @@ import { useState } from "react"
 
 interface User {
   name: string
-  // Add other properties here
 }
 
 function ProfilePage({ user }: { user: User }) {
