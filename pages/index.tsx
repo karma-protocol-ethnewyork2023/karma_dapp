@@ -2,8 +2,53 @@ import Head from "next/head"
 import { Button } from "components/Button/Button"
 import { LP_GRID_ITEMS } from "../lp-items"
 import Image from "next/image"
+import { useSDK } from "@metamask/sdk-react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 export default function Web() {
+  const [account, setAccount] = useState<string>()
+  const [addressFrom, setAddressFrom] = useState<string | null>(null)
+  const { sdk, connected, connecting, provider, chainId } = useSDK()
+
+  const router = useRouter()
+
+  const metamaskConnect = async () => {
+    try {
+      const accounts = await sdk?.connect()
+      console.log(`connected`, accounts)
+      if (!accounts) return
+
+      const account = (accounts as string[])[0]
+      setAccount(account)
+      localStorage.setItem("metamask_account", account)
+      routeAfterConnect()
+    } catch (err) {
+      console.warn(`failed to connect..`, err)
+    }
+  }
+
+  const handleMetamaskConnect = async () => {
+    await metamaskConnect()
+  }
+
+  // route 이동
+  const routeAfterConnect = () => {
+    if (addressFrom) {
+      router.push(`/beconnect`)
+    } else {
+      router.push(`/profile/${account}`)
+    }
+  }
+
+  // 다른 사람 qr 찍고 들어온 것인지 확인
+  useEffect(() => {
+    const addressFromURL = router.query.addressFrom
+    if (addressFromURL && typeof addressFromURL === "string") {
+      setAddressFrom(addressFromURL)
+    }
+  }, [router.query])
+
   return (
     <>
       <Head>
@@ -30,7 +75,10 @@ export default function Web() {
         </div>
         <div className="h-[60px]" />
 
-        <button className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
+        <button
+          className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
+          onClick={handleMetamaskConnect}
+        >
           <div style={{ minWidth: "32px", minHeight: "32px" }}>
             <Image src="/icon_metamask.png" width={32} height={32} alt="" />
           </div>
