@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import Image from "next/image"
-import { useState } from "react"
+import { use, useEffect, useState } from "react"
 
 interface User {
   name: string
@@ -10,6 +10,8 @@ function ProfilePage({ user }: { user: User }) {
   const router = useRouter()
   const { name } = router.query
 
+  const [profileName, setProfileName] = useState("")
+
   const [nodes, setNodes] = useState(0)
   const [superNodes, setSuperNodes] = useState(0)
   const [edges, setEdges] = useState(0)
@@ -18,11 +20,19 @@ function ProfilePage({ user }: { user: User }) {
     return <div>Loading...</div>
   }
 
+  useEffect(() => {
+    if (user.name.length > 10) {
+      setProfileName(`${user.name.slice(0, 10)}...`)
+    } else {
+      setProfileName(user.name)
+    }
+  }, [user.name])
+
   return (
     <main className="relative h-screen w-screen">
       {/* header */}
       <div className="absolute left-0 top-0 flex h-[56px] w-screen items-center justify-between bg-[#393E3A] px-[16px]">
-        <h1 className="font-sans text-[20px] font-bold text-white">{user.name}&rsquo;s Profile</h1>
+        <h1 className="font-sans text-[20px] font-bold text-white">{profileName}&rsquo;s Profile</h1>
         <button style={{ minWidth: "28px", minHeight: "28px" }}>
           <Image src="/icon_search.png" width={28} height={28} alt="" />
         </button>

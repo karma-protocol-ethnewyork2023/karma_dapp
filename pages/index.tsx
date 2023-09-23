@@ -20,9 +20,10 @@ export default function Web() {
       if (!accounts) return
 
       const account = (accounts as string[])[0]
+      console.log(`account`, account)
       setAccount(account)
       localStorage.setItem("metamask_account", account)
-      routeAfterConnect()
+      routeAfterConnect(account)
     } catch (err) {
       console.warn(`failed to connect..`, err)
     }
@@ -33,11 +34,12 @@ export default function Web() {
   }
 
   // route 이동
-  const routeAfterConnect = () => {
+  const routeAfterConnect = (address: string) => {
     if (addressFrom) {
-      router.push(`/beconnect`)
+      // query에 address 넣어서 보내기
+      router.push(`/beconnect?name=${address}`)
     } else {
-      router.push(`/profile/${account}`)
+      router.push(`/profile/${address}`)
     }
   }
 
