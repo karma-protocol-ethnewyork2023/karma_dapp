@@ -1,7 +1,8 @@
 import Head from "next/head"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
+import QRCode from "react-qr-code"
 
 interface User {
   name: string
@@ -10,6 +11,24 @@ interface User {
 export default function QrCode({ user }: { user: User }) {
   const router = useRouter()
   const { name } = router.query
+
+  const [isMyProfile, setIsMyProfile] = useState(false)
+  const [profileName, setProfileName] = useState("")
+
+  useEffect(() => {
+    console.log(user.name, localStorage.getItem("metamask_account"))
+    if (user.name === localStorage.getItem("metamask_account")) {
+      setIsMyProfile(true)
+      setProfileName("My")
+    } else {
+      if (user.name.length > 10) {
+        setProfileName(`${user.name.slice(0, 10)}...`)
+      } else {
+        setProfileName(`${user.name}'s`)
+      }
+      setIsMyProfile(false)
+    }
+  }, [])
 
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -39,13 +58,25 @@ export default function QrCode({ user }: { user: User }) {
           <div className="relative min-h-[302px] min-w-[302px] rounded-[40px] bg-main p-[36.24px]">
             <div className="absolute -top-[73px] left-[104px] min-h-[92px] min-w-[92px]">
               <div className="relative">
-                <Image src="/qr_profile_circle.png" width={92} height={92} alt="" />
+                <Image
+                  src={isMyProfile ? "/qr_profile_circle.png" : "/qr_profile_circle_other.png"}
+                  width={92}
+                  height={92}
+                  alt=""
+                />
                 <div className="absolute top-0 flex h-full w-full flex-col items-center justify-center -space-y-5">
                   <span className="text-[50px]">‍👤</span>
-                  <span className="font-sans text-[18px] font-bold text-[#282E29]">{user.name}</span>
+                  <span className="font-sans text-[18px] font-bold text-[#282E29]">{profileName}</span>
                 </div>
               </div>
             </div>
+            <QRCode
+              size={200}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={`https://karma-dapp.vercel.app?addressFrom=${user.name}`}
+              viewBox={`0 0 256 256`}
+              bgColor="#FFEBBB"
+            />
           </div>
         </div>
       </main>
