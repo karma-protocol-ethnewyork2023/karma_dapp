@@ -16,17 +16,17 @@ function ProfilePage({ user }: { user: User }) {
   const [superNodes, setSuperNodes] = useState(0)
   const [edges, setEdges] = useState(0)
 
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
-
   useEffect(() => {
     if (user.name.length > 10) {
       setProfileName(`${user.name.slice(0, 10)}...`)
     } else {
       setProfileName(user.name)
     }
-  }, [user.name])
+  }, [router.query])
+
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
 
   return (
     <main className="relative h-screen w-screen">
