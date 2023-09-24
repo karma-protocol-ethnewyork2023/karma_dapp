@@ -81,7 +81,9 @@ export default function Web() {
 
   const onSignIn = async (tokens: any, profile: any) => {
     console.log("onSignIn", tokens, profile)
-    routeAfterConnect()
+    // telegram signin을 마쳐주세요.
+    alert("Thanks! After you sign in with Telegram, you will be redirected to your profile.")
+    // routeAfterConnect()
   }
 
   return (
@@ -177,7 +179,7 @@ export default function Web() {
             handleTelegramConnect()
           }}
           botName="KarmaProtocolBot"
-          className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
+          //   className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
         />
 
         {/* <button data-telegram-login="KarmaProtocolBot" className="h-[100px] w-[100px] bg-white"></button> */}
