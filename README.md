@@ -1,4 +1,4 @@
-![zk_logo](https://github.com/karma-protocol-ethnewyork2023/karma_dapp/assets/75651834/9d04106b-78da-4305-b189-7836e63094d3)
+![zkbellma](https://github.com/karma-protocol-ethnewyork2023/karma_dapp/assets/75651834/5bd3da52-4972-45bf-9477-66c0572e3c3b)
 
 ## ZK BELLMAN FORD(Karma Protocol) - Proof of Networking
 
