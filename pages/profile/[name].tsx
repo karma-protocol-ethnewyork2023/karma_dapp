@@ -32,7 +32,7 @@ function ProfilePage({ user }: { user: User }) {
   useEffect(() => {
     getNearestDc()
     // authSendCode("821064348327")
-    getUserInfoByUsername("Jewelrykim")
+    // getUserInfoByUsername("Jewelrykim")
   }, [])
 
   useEffect(() => {

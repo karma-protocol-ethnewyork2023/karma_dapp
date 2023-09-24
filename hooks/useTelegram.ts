@@ -148,7 +148,7 @@ function useTelegram() {
     // return null
   }
 
-  return { mtproto, getNearestDc, authSendCode, authSignIn, getUserInfoByUsername }
+  return { mtproto, call, getNearestDc, authSendCode, authSignIn, getUserInfoByUsername }
 }
 
 export default useTelegram
