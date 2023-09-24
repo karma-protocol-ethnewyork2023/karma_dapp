@@ -144,9 +144,9 @@ export default function Web() {
               @{ens}
             </div>
           </div>
-          <button style={{ minWidth: "24px", minHeight: "24px" }}>
+          <div style={{ minWidth: "24px", minHeight: "24px" }}>
             <Image src="/icon_downarrow.png" width={24} height={24} alt="" />
-          </button>
+          </div>
         </button>
 
         <div className="h-[40px]" />
@@ -164,10 +164,17 @@ export default function Web() {
             Telegram Connect
           </div>
         </button>
+
         <div className="h-[12px]" />
-        <div className="bg-white">
-          <TelegramLoginButton dataOnauth={handleTelegramConnect} botName="KarmaProtocolBot" />
-        </div>
+        <TelegramLoginButton
+          dataOnauth={
+            (user: TelegramUser) => {
+              console.log(user)
+            }
+            // handleTelegramConnect()
+          }
+          botName="KarmaProtocolBot"
+        />
 
         {/* <button data-telegram-login="KarmaProtocolBot" className="h-[100px] w-[100px] bg-white"></button> */}
         {/* <TelegramLoginButton dataOnauth={handleTelegramConnect} botName="KarmaProtocolBot" /> */}
