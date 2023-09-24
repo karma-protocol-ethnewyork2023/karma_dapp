@@ -1,3 +1,5 @@
+import { SignInWithLens, Size } from "@lens-protocol/widgets-react"
+import dynamic from "next/dynamic"
 import Head from "next/head"
 import { Button } from "components/Button/Button"
 
@@ -15,6 +17,8 @@ interface EnsResponse {
   identity: string
 }
 
+const SignInComponent = dynamic(() => import("../../components/SignInComponent"), { ssr: false })
+
 export default function Web() {
   const [account, setAccount] = useState<string>()
   const [addressFrom, setAddressFrom] = useState<string | null>(null)
@@ -26,22 +30,6 @@ export default function Web() {
 
   const router = useRouter()
 
-  const metamaskConnect = async () => {
-    try {
-      const accounts = await sdk?.connect()
-      console.log(`connected`, accounts)
-      if (!accounts) return
-
-      const account = (accounts as string[])[0]
-      console.log(`account`, account)
-      setAccount(account)
-      localStorage.setItem("metamask_account", account)
-      routeAfterConnect(account)
-    } catch (err) {
-      console.warn(`failed to connect..`, err)
-    }
-  }
-
   const telegramConnect = async () => {
     // const { phone_code_hash } = await call('auth.sendCode', {
     //   phone_number: phone,
@@ -51,21 +39,17 @@ export default function Web() {
     // });
   }
 
-  const handleMetamaskConnect = async () => {
-    await metamaskConnect()
-  }
-
   const handleTelegramConnect = async () => {
     await telegramConnect()
   }
 
   // route 이동
-  const routeAfterConnect = (address: string) => {
+  const routeAfterConnect = () => {
     if (addressFrom) {
       // query에 address 넣어서 보내기
       router.push(`/beconnect?name=${addressFrom}`)
     } else {
-      router.push(`/profile/${address}`)
+      router.push(`/profile/${localStorage.getItem("metamask_account")}`)
     }
   }
 
@@ -100,6 +84,11 @@ export default function Web() {
     getEns()
   }, [])
 
+  const onSignIn = async (tokens: any, profile: any) => {
+    console.log("onSignIn", tokens, profile)
+    routeAfterConnect()
+  }
+
   return (
     <>
       <Head>
@@ -111,15 +100,6 @@ export default function Web() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
-        <script
-          async
-          src="https://telegram.org/js/telegram-widget.js?22"
-          data-telegram-login="KarmaProtocolBot"
-          data-size="large"
-          data-userpic="false"
-          data-auth-url=""
-          data-request-access="write"
-        ></script>
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         {/* <div className="">
@@ -137,10 +117,7 @@ export default function Web() {
           on &quot;ZK Bellman Ford&quot;.
         </span>
         <div className="h-[12px]" />
-        <button
-          className="flex h-[54px] w-[335px] items-center justify-between space-x-2 rounded-full bg-white px-[17px] py-[16px]"
-          onClick={handleMetamaskConnect}
-        >
+        <button className="flex h-[54px] w-[335px] items-center justify-between space-x-2 rounded-full bg-white px-[17px] py-[16px]">
           <div className="flex items-center justify-center">
             <div style={{ minWidth: "32px", minHeight: "32px" }}>
               <Image src="/icon_ens.png" width={32} height={32} alt="" />
@@ -161,17 +138,7 @@ export default function Web() {
         </span>
         <div className="h-[12px]" />
 
-        <button
-          className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
-          onClick={handleMetamaskConnect}
-        >
-          <div style={{ minWidth: "32px", minHeight: "32px" }}>
-            <Image src="/icon_lens.png" width={32} height={32} alt="" />
-          </div>
-          <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
-            Lens Connect
-          </div>
-        </button>
+        <SignInComponent onSignIn={onSignIn} />
         <button className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
           <div style={{ minWidth: "32px", minHeight: "32px" }}>
             <Image src="/icon_telegram.png" width={32} height={32} alt="" />

@@ -86,15 +86,6 @@ export default function Web() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
-        <script
-          async
-          src="https://telegram.org/js/telegram-widget.js?22"
-          data-telegram-login="KarmaProtocolBot"
-          data-size="large"
-          data-userpic="false"
-          data-auth-url=""
-          data-request-access="write"
-        ></script>
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         {/* <div className="">

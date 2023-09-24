@@ -23,6 +23,7 @@
     "coupling-graph": "npx madge --extensions js,jsx,ts,tsx,css,md,mdx ./ --exclude '.next|tailwind.config.js|reset.d.ts|prettier.config.js|postcss.config.js|playwright.config.ts|next.config.js|next-env.d.ts|instrumentation.ts|e2e/|README.md|.storybook/|.eslintrc.js' --image graph.svg"
   },
   "dependencies": {
+    "@lens-protocol/widgets-react": "^0.0.34",
     "@metamask/sdk-react": "^0.7.0",
     "@mtproto/core": "6.3.0",
     "@next/bundle-analyzer": "^13.3.0",
