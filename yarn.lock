@@ -2010,7 +2010,7 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.18.3", "@babel/runtime@^7.21.0":
+"@babel/runtime@^7.18.3", "@babel/runtime@^7.21.0", "@babel/runtime@^7.6.0":
   version "7.22.15"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.15.tgz#38f46494ccf6cf020bd4eed7124b425e83e523b8"
   integrity sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==
@@ -19149,6 +19149,14 @@ tar@^6.1.11, tar@^6.1.13, tar@^6.1.15, tar@^6.1.2:
     minizlib "^2.1.1"
     mkdirp "^1.0.3"
     yallist "^4.0.0"
+
+telegram-login-button@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/telegram-login-button/-/telegram-login-button-0.0.3.tgz#8000f884b50fca5a71c62101bfd3c86b6906a524"
+  integrity sha512-R5f3z/YANJjFxIBQxagjrVf+1im/u2CecKlTbFjun9MhPAge8KY3gJ8gTp0TuVJ+L5JShlRDdvrGQibjUiUk0Q==
+  dependencies:
+    "@babel/runtime" "^7.6.0"
+    prop-types "^15.7.2"
 
 telejson@^7.0.3:
   version "7.1.0"

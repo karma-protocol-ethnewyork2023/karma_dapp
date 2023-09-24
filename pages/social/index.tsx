@@ -1,6 +1,7 @@
 import { SignInWithLens, Size } from "@lens-protocol/widgets-react"
 import dynamic from "next/dynamic"
 import Head from "next/head"
+import TelegramLoginButton, { TelegramUser } from "telegram-login-button"
 import { Button } from "components/Button/Button"
 
 import Image from "next/image"
@@ -8,9 +9,6 @@ import { useSDK } from "@metamask/sdk-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import useTelegram from "hooks/useTelegram"
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const TelegramLoginButton = require("react-telegram-login")
 
 interface EnsResponse {
   address: string
@@ -102,6 +100,23 @@ export default function Web() {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
+        <script
+          async
+          src="https://telegram.org/js/telegram-widget.js?22"
+          data-telegram-login="KarmaProtocolBot"
+          data-size="large"
+          data-onauth="onTelegramAuth(user)"
+          data-request-access="write"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          function onTelegramAuth(user) {
+            alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+          }
+        `,
+          }}
+        ></script>
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         {/* <div className="">
@@ -149,6 +164,11 @@ export default function Web() {
             Telegram Connect
           </div>
         </button>
+        <div className="h-[12px]" />
+        <div className="bg-white">
+          <TelegramLoginButton dataOnauth={handleTelegramConnect} botName="KarmaProtocolBot" />
+        </div>
+
         {/* <button data-telegram-login="KarmaProtocolBot" className="h-[100px] w-[100px] bg-white"></button> */}
         {/* <TelegramLoginButton dataOnauth={handleTelegramConnect} botName="KarmaProtocolBot" /> */}
       </main>
