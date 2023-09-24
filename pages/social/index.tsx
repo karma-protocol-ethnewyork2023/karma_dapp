@@ -173,13 +173,12 @@ export default function Web() {
 
         <div className="h-[12px]" />
         <TelegramLoginButton
+          botName="KarmaProtocolBot"
           dataOnauth={(user: TelegramUser) => {
             console.log(user)
             localStorage.setItem("telegram_account", user.id.toString())
             handleTelegramConnect()
           }}
-          botName="KarmaProtocolBot"
-          //   className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
         />
 
         {/* <button data-telegram-login="KarmaProtocolBot" className="h-[100px] w-[100px] bg-white"></button> */}
