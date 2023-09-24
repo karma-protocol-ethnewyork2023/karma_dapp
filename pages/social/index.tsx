@@ -29,12 +29,7 @@ export default function Web() {
   const router = useRouter()
 
   const telegramConnect = async () => {
-    // const { phone_code_hash } = await call('auth.sendCode', {
-    //   phone_number: phone,
-    //   settings: {
-    //     _: 'codeSettings',
-    //   },
-    // });
+    routeAfterConnect()
   }
 
   const handleTelegramConnect = async () => {
@@ -117,6 +112,15 @@ export default function Web() {
         `,
           }}
         ></script>
+        <script
+          async
+          src="https://telegram.org/js/telegram-widget.js?22"
+          data-telegram-login="KarmaProtocolBot"
+          data-size="large"
+          data-userpic="false"
+          data-auth-url=""
+          data-request-access="write"
+        ></script>
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         {/* <div className="">
@@ -156,24 +160,24 @@ export default function Web() {
         <div className="h-[12px]" />
 
         <SignInComponent onSignIn={onSignIn} />
-        <button className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
+        {/* <button className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
           <div style={{ minWidth: "32px", minHeight: "32px" }}>
             <Image src="/icon_telegram.png" width={32} height={32} alt="" />
           </div>
           <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
             Telegram Connect
           </div>
-        </button>
+        </button> */}
 
         <div className="h-[12px]" />
         <TelegramLoginButton
-          dataOnauth={
-            (user: TelegramUser) => {
-              console.log(user)
-            }
-            // handleTelegramConnect()
-          }
+          dataOnauth={(user: TelegramUser) => {
+            console.log(user)
+            localStorage.setItem("telegram_account", user.id.toString())
+            handleTelegramConnect()
+          }}
           botName="KarmaProtocolBot"
+          className="mt-[12px] flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]"
         />
 
         {/* <button data-telegram-login="KarmaProtocolBot" className="h-[100px] w-[100px] bg-white"></button> */}
