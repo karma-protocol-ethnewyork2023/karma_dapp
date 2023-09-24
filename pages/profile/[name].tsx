@@ -96,21 +96,22 @@ function ProfilePage({ user }: { user: User }) {
       // Dynamic import
       import("vis-network/peer").then((visNetwork) => {
         import("vis-data/peer").then((visData) => {
-          const mainNode = isMyProfile
-            ? {
-                id: 1,
-                shape: "circularImage",
-                image: "/graph_icon_me.png",
-                size: 50,
-              }
-            : {
-                id: 1,
-                shape: "circularImage",
-                image: "/qr_profile_circle_other.png",
-                label: profileName,
-                title: profileName,
-                size: 50,
-              }
+          const mainNode =
+            user.name === localStorage.getItem("metamask_account")
+              ? {
+                  id: 1,
+                  shape: "circularImage",
+                  image: "/graph_icon_me.png",
+                  size: 50,
+                }
+              : {
+                  id: 1,
+                  shape: "circularImage",
+                  image: "/qr_profile_circle_other.png",
+                  label: profileName,
+                  title: profileName,
+                  size: 50,
+                }
           const nodes = new visData.DataSet([
             mainNode,
             { id: 2, shape: "circularImage", image: "/graph_icon_node.png" },
@@ -156,7 +157,26 @@ function ProfilePage({ user }: { user: User }) {
 
           // Check again just in case
           if (containerRef.current && !isGraphLoaded) {
+            console.log("network")
             const network = new visNetwork.Network(containerRef.current, data, options)
+
+            const exampleAddress = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045" // vitalik
+            //http://localhost:3000/profile/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+            // node click event
+            network.on("click", function (params) {
+              if (params.nodes.length > 0) {
+                console.log(params.nodes[0])
+                if (params.nodes[0] === 1) {
+                  return
+                } else {
+                  // to exampleAddress profile page and reload profile page
+                  router.push(`/profile/${exampleAddress}`).then(() => window.location.reload())
+                }
+
+                // router.push(`/profile/${params.nodes[0]}`)
+              }
+            })
+
             setIsGraphLoaded(true)
           }
         })
@@ -264,7 +284,7 @@ function ProfilePage({ user }: { user: User }) {
             </div>
           </button>
         )}
-        <FollowOnLensComponent handle={lensHandle} />
+        {!isMyProfile && <FollowOnLensComponent handle={lensHandle} />}
 
         <div className="h-[20px]" />
         {/* Feed */}
