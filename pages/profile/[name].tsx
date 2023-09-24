@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { use, useEffect, useRef, useState } from "react"
 import { DataSet } from "vis-data/peer"
@@ -12,6 +13,8 @@ interface User {
 const tele_api_id = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_ID
 const tele_api_hash = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_HASH
 
+const FollowOnLensComponent = dynamic(() => import("../../components/FollowOnLensComponent"), { ssr: false })
+
 function ProfilePage({ user }: { user: User }) {
   const router = useRouter()
   const { name } = router.query
@@ -23,11 +26,13 @@ function ProfilePage({ user }: { user: User }) {
   const [profileEns, setProfileEns] = useState("noname.eth")
   const [profileAddress, setProfileAddress] = useState("0x0000000")
 
+  const [lensHandle, setLensHandle] = useState("vitalik")
+
   const [isMyProfile, setIsMyProfile] = useState(false)
 
-  const [nodes, setNodes] = useState(6)
-  const [superNodes, setSuperNodes] = useState(2)
-  const [edges, setEdges] = useState(9)
+  const [nodes, setNodes] = useState(1934)
+  const [superNodes, setSuperNodes] = useState(84)
+  const [edges, setEdges] = useState(327)
 
   const { getNearestDc, authSendCode, authSignIn, getUserInfoByUsername } = useTelegram()
 
@@ -45,6 +50,8 @@ function ProfilePage({ user }: { user: User }) {
       const ens = localStorage.getItem("ens")
       if (ens) {
         setProfileEns(ens)
+        const slicedEns = ens.slice(0, ens.length - 4)
+        setLensHandle(slicedEns)
       }
       const address = localStorage.getItem("metamask_account")
       if (address) {
@@ -54,11 +61,34 @@ function ProfilePage({ user }: { user: User }) {
     } else {
       if (user.name.length > 10) {
         setProfileName(`${user.name.slice(0, 10)}...`)
+        const shortAddress = `${user.name.slice(0, 6)}...${user.name.slice(user.name.length - 4, user.name.length)}`
+        setProfileAddress(shortAddress)
       } else {
         setProfileName(`${user.name}'s`)
       }
       setIsMyProfile(false)
     }
+
+    const getEns = async () => {
+      try {
+        const res = await fetch(`https://api.web3.bio/profile/ens/${user.name}`)
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch ENS with status ${res.status}`)
+        }
+        const data: { address: string; identity: string } = (await res.json()) as {
+          address: string
+          identity: string
+        }
+        console.log(data, typeof data)
+        setProfileName(data.identity)
+        setProfileEns(data.identity)
+        localStorage.setItem("ens", data.identity)
+      } catch (err) {
+        console.warn(`failed to connect..`, err)
+      }
+    }
+    getEns()
   }, [])
 
   useEffect(() => {
@@ -66,8 +96,23 @@ function ProfilePage({ user }: { user: User }) {
       // Dynamic import
       import("vis-network/peer").then((visNetwork) => {
         import("vis-data/peer").then((visData) => {
+          const mainNode = isMyProfile
+            ? {
+                id: 1,
+                shape: "circularImage",
+                image: "/graph_icon_me.png",
+                size: 50,
+              }
+            : {
+                id: 1,
+                shape: "circularImage",
+                image: "/qr_profile_circle_other.png",
+                label: profileName,
+                title: profileName,
+                size: 50,
+              }
           const nodes = new visData.DataSet([
-            { id: 1, shape: "circularImage", image: "/graph_icon_me.png", size: 50 },
+            mainNode,
             { id: 2, shape: "circularImage", image: "/graph_icon_node.png" },
             { id: 3, shape: "circularImage", image: "/graph_icon_node.png" },
             { id: 4, shape: "circularImage", image: "/graph_icon_supernode.png" },
@@ -219,6 +264,21 @@ function ProfilePage({ user }: { user: User }) {
             </div>
           </button>
         )}
+        <FollowOnLensComponent handle={lensHandle} />
+
+        <div className="h-[20px]" />
+        {/* Feed */}
+        <span className="w-[335px] font-sans text-[20px] font-bold text-main">Feed</span>
+
+        <div className="h-[20px]" />
+
+        <div className="flex w-[335px] flex-col items-center space-y-[8px] rounded-[20px] bg-[#393E3A] px-[20px] py-[16px]">
+          <div style={{ minWidth: "295px", minHeight: "402px" }}>
+            <Image src="/example.png" width={295} height={402} alt="" />
+          </div>
+        </div>
+
+        <div className="h-[40px]" />
       </div>
     </main>
   )

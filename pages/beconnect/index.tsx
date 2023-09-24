@@ -1,10 +1,47 @@
 import Head from "next/head"
 import Image from "next/image"
-import { useState } from "react"
+import { use, useEffect, useState } from "react"
+import { useRouter } from "next/router"
+
+interface EnsResponse {
+  address: string
+  identity: string
+}
 
 export default function BeConnect() {
-  const [conterParty, setCounterParty] = useState("Billy")
+  const [conterParty, setCounterParty] = useState("Billy.eth")
   const [interParties, setInterParties] = useState(["Bob", "Joe", "Jane"])
+
+  const router = useRouter()
+
+  const { addressFrom } = router.query
+
+  useEffect(() => {
+    const getEns = async () => {
+      try {
+        const res = await fetch(`https://api.web3.bio/profile/ens/${addressFrom}`)
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch ENS with status ${res.status}`)
+        }
+        const data: EnsResponse = (await res.json()) as EnsResponse
+        console.log(data, typeof data)
+        setCounterParty(data.identity)
+      } catch (err) {
+        console.warn(`failed to connect..`, err)
+      }
+    }
+    getEns()
+  }, [])
+
+  const handleConnect = () => {
+    if (addressFrom) {
+      router.push(`/profile/${addressFrom}`)
+    } else {
+      router.push(`/profile/${localStorage.getItem("metamask_account")}`)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -47,10 +84,16 @@ export default function BeConnect() {
           {/* inter parties */}
           <div className="relative" style={{ minWidth: "162px", minHeight: "40px" }}>
             <Image src="/beconnect_line.png" width={162} height={26} alt="" />
-            <div className="absolute left-[60px] top-[6px]" style={{ minWidth: "40px", minHeight: "40px" }}>
+            <div className="absolute left-[40px] top-[6px]" style={{ minWidth: "40px", minHeight: "40px" }}>
               <Image src="/white_circle.png" width={40} height={40} alt="" />
               <div className="absolute left-[10px] top-[6px]" style={{ minWidth: "24px", minHeight: "24px" }}>
                 <Image src="/icon_ninza.png" width={24} height={24} alt="" />
+              </div>
+            </div>
+            <div className="absolute left-[70px] top-[6px]" style={{ minWidth: "40px", minHeight: "40px" }}>
+              <Image src="/white_circle.png" width={40} height={40} alt="" />
+              <div className="absolute left-[10px] top-[6px]" style={{ minWidth: "24px", minHeight: "24px" }}>
+                <Image src="/icon_magic.png" width={24} height={24} alt="" />
               </div>
             </div>
           </div>
@@ -71,7 +114,7 @@ export default function BeConnect() {
                     <Image src="/icon_ninza.png" width={24} height={24} alt="" />
                   </div>
                 </div>
-                <div className="w-[2px]" />
+                <div className="w-[8px]" />
                 <div className="flex flex-col">
                   <span className="text-start font-sans text-[18px] font-bold leading-normal text-white">
                     Daisy albero
@@ -94,22 +137,20 @@ export default function BeConnect() {
                 <div className="relative" style={{ minWidth: "40px", minHeight: "40px" }}>
                   <Image src="/white_circle.png" width={40} height={40} alt="" />
                   <div className="absolute left-[9px] top-[6px]" style={{ minWidth: "24px", minHeight: "24px" }}>
-                    <Image src="/icon_ninza.png" width={24} height={24} alt="" />
+                    <Image src="/icon_magic.png" width={24} height={24} alt="" />
                   </div>
                 </div>
-                <div className="w-[2px]" />
+                <div className="w-[8px]" />
                 <div className="flex flex-col">
-                  <span className="text-start font-sans text-[18px] font-bold leading-normal text-white">
-                    Daisy albero
-                  </span>
+                  <span className="text-start font-sans text-[18px] font-bold leading-normal text-white">Pinkly</span>
                   <div className="flex">
                     <span>📍</span>
                     <span className="text-start font-sans text-[14px] font-bold leading-normal text-[#C3E4CD]">
-                      Opensea
+                      Blur
                     </span>
                     <span className="w-[4px]" />
                     <span className="text-start font-sans text-[14px] font-normal leading-normal text-white">
-                      0xb2...c2x1
+                      0xba...12ad
                     </span>
                   </div>
                 </div>
@@ -120,7 +161,10 @@ export default function BeConnect() {
         <div className="h-[61px]" />
 
         <button className="flex h-[54px] w-[335px] items-center justify-center space-x-2 rounded-full bg-[#FFEBB8] px-[17px] py-[16px]">
-          <div className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]">
+          <div
+            onClick={handleConnect}
+            className="text-center font-sans text-lg font-bold leading-[140%] tracking-[0.15px] text-[#282E29]"
+          >
             Connect
           </div>
         </button>
