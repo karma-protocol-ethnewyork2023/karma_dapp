@@ -82,8 +82,8 @@ export default function Web() {
   const onSignIn = async (tokens: any, profile: any) => {
     console.log("onSignIn", tokens, profile)
     // telegram signin을 마쳐주세요.
-    alert("Thanks! After you sign in with Telegram, you will be redirected to your profile.")
-    // routeAfterConnect()
+    // alert("Thanks! After you sign in with Telegram, you will be redirected to your profile.")
+    routeAfterConnect()
   }
 
   return (

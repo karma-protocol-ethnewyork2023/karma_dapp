@@ -12,6 +12,7 @@ interface User {
 }
 const tele_api_id = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_ID
 const tele_api_hash = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_HASH
+const tele_api_key = process.env.NEXT_PUBLIC_TELEGRAM_APP_API_KEY
 
 const FollowOnLensComponent = dynamic(() => import("../../components/FollowOnLensComponent"), { ssr: false })
 
@@ -194,11 +195,24 @@ function ProfilePage({ user }: { user: User }) {
   }
 
   const handleSendTelegramMsg = () => {
-    console.log("qr code click")
+    console.log("send telegram click")
+    // telegramSendMsgByBot("5272740163") // jewel
+    telegramSendMsgByBot("5247807425") // juho
   }
 
   const handleSearchClick = () => {
     router.push("/search/opensea")
+  }
+
+  const telegramSendMsgByBot = async (userid: string) => {
+    const message =
+      "Name: julia kim \nCompany: zk social graph\nTitle: developer\nEmail: julia@zkzk.com\n\nMake most of your network with zk social graph!"
+    const encodedMessage = encodeURIComponent(message)
+    // api call
+    const url = `https://api.telegram.org/bot${tele_api_key}/sendMessage?chat_id=${userid}&text=${encodedMessage}`
+    const res = await fetch(url)
+    const data = await res.json()
+    console.log(data)
   }
 
   return (
