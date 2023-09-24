@@ -20,6 +20,8 @@ function ProfilePage({ user }: { user: User }) {
   const [isGraphLoaded, setIsGraphLoaded] = useState(false)
 
   const [profileName, setProfileName] = useState("")
+  const [profileEns, setProfileEns] = useState("noname.eth")
+  const [profileAddress, setProfileAddress] = useState("0x0000000")
 
   const [isMyProfile, setIsMyProfile] = useState(false)
 
@@ -40,6 +42,15 @@ function ProfilePage({ user }: { user: User }) {
     if (user.name === localStorage.getItem("metamask_account")) {
       setIsMyProfile(true)
       setProfileName("My")
+      const ens = localStorage.getItem("ens")
+      if (ens) {
+        setProfileEns(ens)
+      }
+      const address = localStorage.getItem("metamask_account")
+      if (address) {
+        const shortAddress = `${address.slice(0, 6)}...${address.slice(address.length - 4, address.length)}`
+        setProfileAddress(shortAddress)
+      }
     } else {
       if (user.name.length > 10) {
         setProfileName(`${user.name.slice(0, 10)}...`)
@@ -114,10 +125,15 @@ function ProfilePage({ user }: { user: User }) {
 
   const handleQrCodeClick = () => {
     console.log("qr code click")
+    router.push(`/qrcode/${localStorage.getItem("metamask_account")}`)
   }
 
   const handleSendTelegramMsg = () => {
     console.log("qr code click")
+  }
+
+  const handleSearchClick = () => {
+    router.push("/search/opensea")
   }
 
   return (
@@ -125,7 +141,7 @@ function ProfilePage({ user }: { user: User }) {
       {/* header */}
       <div className="absolute left-0 top-0 flex h-[56px] w-screen items-center justify-between bg-[#393E3A] px-[16px]">
         <h1 className="font-sans text-[20px] font-bold text-white">{profileName} Profile</h1>
-        <button style={{ minWidth: "28px", minHeight: "28px" }}>
+        <button onClick={handleSearchClick} style={{ minWidth: "28px", minHeight: "28px" }}>
           <Image src="/icon_search.png" width={28} height={28} alt="" />
         </button>
       </div>
@@ -138,6 +154,12 @@ function ProfilePage({ user }: { user: User }) {
           <div ref={containerRef} style={{ width: "285px", height: "285px" }} className="absolute top-0"></div>
         </div>
 
+        <div className="h-[33px]" />
+        {/* profile */}
+        <div className="flex flex-col items-center justify-center">
+          <span className="font-sans text-[30px] font-bold text-main">{profileEns}</span>
+          <span className="font-sans text-[16px] font-light text-main">{profileAddress}</span>
+        </div>
         <div className="h-[33px]" />
         {/* datas */}
         <div className="flex w-[335px] flex-col items-center space-y-[8px] rounded-[20px] bg-[#393E3A] px-[20px] py-[16px]">

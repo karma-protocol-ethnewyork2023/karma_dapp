@@ -30,6 +30,10 @@ export default function QrCode({ user }: { user: User }) {
     }
   }, [])
 
+  const handleCloseButton = () => {
+    router.back()
+  }
+
   if (router.isFallback) {
     return <div>Loading...</div>
   }
@@ -50,7 +54,7 @@ export default function QrCode({ user }: { user: User }) {
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         <div className="absolute left-0 top-0 flex h-[56px] w-screen items-center justify-between px-[16px]">
           <h1 className="font-sans text-[20px] font-bold text-white">QR Code</h1>
-          <button style={{ minWidth: "28px", minHeight: "28px" }}>
+          <button onClick={handleCloseButton} style={{ minWidth: "28px", minHeight: "28px" }}>
             <Image src="/icon_cross.png" width={28} height={28} alt="" />
           </button>
         </div>

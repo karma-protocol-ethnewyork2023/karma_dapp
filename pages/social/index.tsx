@@ -77,8 +77,10 @@ export default function Web() {
         console.log(data, typeof data)
 
         setEns(data.identity)
+        localStorage.setItem("ens", data.identity)
       } catch (err) {
         console.log("Error fetching ENS: ", err)
+        localStorage.setItem("ens", "noname.eth")
       }
     }
     getEns()
