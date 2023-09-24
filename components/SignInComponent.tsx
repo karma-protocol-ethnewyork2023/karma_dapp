@@ -1,6 +1,6 @@
-import { SignInWithLens, Size } from "@lens-protocol/widgets-react"
+import { SignInWithLens, Size, Tokens } from "@lens-protocol/widgets-react"
 
-const SignInComponent = ({ onSignIn }: { onSignIn: any }) => {
+const SignInComponent = ({ onSignIn }: { onSignIn: (tokens: Tokens, profile: any) => void }) => {
   return (
     <SignInWithLens
       title="Lens Connect"
